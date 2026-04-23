@@ -1,0 +1,91 @@
+import { useState, type SyntheticEvent } from "react";
+import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import type { RegisterUserRequest } from "../types/Auth";
+import { useAuth } from "../contexts/AuthContext";
+
+const RegisterPage = () => {
+  const [formData, setFormData] = useState<RegisterUserRequest>({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { registerUser } = useAuth();
+
+  const handleSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      await registerUser(formData);
+      navigate("/");
+    } catch (error: any) {
+      const message = error?.response?.data?.message || "Something went wrong";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Container fluid>
+      <Row className="justify-content-center">
+        <Col md={6} className="text-start">
+          <h2>Register</h2>
+          {error && <Alert variant="danger">{error}</Alert>}
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formEmail">
+              <Form.Label className="text-muted">Email</Form.Label>
+              <Form.Control
+                className="shadow-sm mb-2"
+                type="email"
+                placeholder="Enter email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formPassword">
+              <Form.Label className="text-muted">Password</Form.Label>
+              <Form.Control
+                className="shadow-sm mb-2"
+                type="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formConfirmPassword">
+              <Form.Label className="text-muted">Confirm Password</Form.Label>
+              <Form.Control
+                className="shadow-sm mb-3"
+                type="password"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
+                required
+              />
+            </Form.Group>
+
+            <Button variant="dark" type="submit" disabled={loading}>
+              {loading ? "Registering..." : "Register"}
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+export default RegisterPage;
