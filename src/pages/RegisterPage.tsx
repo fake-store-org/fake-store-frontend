@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import type { RegisterUserRequest } from "../types/Auth";
 import { useAuth } from "../contexts/AuthContext";
+import type { ErrorResponse } from "../types/Error";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState<RegisterUserRequest>({
@@ -10,7 +11,8 @@ const RegisterPage = () => {
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [generalError, setGeneralError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { registerUser } = useAuth();
@@ -18,13 +20,20 @@ const RegisterPage = () => {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+    setFieldErrors({});
+    setGeneralError("");
     try {
       await registerUser(formData);
       navigate("/");
     } catch (error: any) {
-      const message = error?.response?.data?.message || "Something went wrong";
-      setError(message);
+      const errorData: ErrorResponse | undefined = error?.response?.data;
+      if (errorData?.fieldErrors) {
+        setFieldErrors(errorData.fieldErrors);
+      } else if (errorData?.message) {
+        setGeneralError(errorData.message);
+      } else {
+        setGeneralError("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -35,7 +44,7 @@ const RegisterPage = () => {
       <Row className="justify-content-center">
         <Col md={6} className="text-start">
           <h2>Register</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
+          {generalError && <Alert variant="danger">{generalError}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formEmail">
               <Form.Label className="text-muted">Email</Form.Label>
@@ -47,8 +56,12 @@ const RegisterPage = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
+                isInvalid={!!fieldErrors.email}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                {fieldErrors.email}{" "}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group controlId="formPassword">
@@ -61,8 +74,12 @@ const RegisterPage = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
+                isInvalid={!!fieldErrors.password}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                {fieldErrors.password}{" "}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group controlId="formConfirmPassword">
@@ -75,8 +92,12 @@ const RegisterPage = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, confirmPassword: e.target.value })
                 }
+                isInvalid={!!fieldErrors.confirmPassword}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                {fieldErrors.confirmPassword}{" "}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Button variant="dark" type="submit" disabled={loading}>
