@@ -1,11 +1,11 @@
 import type { AddressRequest } from "./Auth";
 
-export interface OrderItemRequest {
+export interface CartItemRequest {
   productId: string;
   quantity: number;
 }
 
 export interface OrderRequest {
-  orderItemRequests: Set<OrderItemRequest>;
+  itemRequests: Set<CartItemRequest>;
   address: AddressRequest;
 }
