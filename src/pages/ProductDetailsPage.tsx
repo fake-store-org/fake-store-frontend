@@ -1,22 +1,25 @@
-import { Container, Row, Col, Alert } from "react-bootstrap";
+import { Container, Row, Col, Alert, Button } from "react-bootstrap";
 import type { ProductDTO } from "../types/Product";
 import { useState, useEffect } from "react";
 import { getProductById } from "../services/api";
 import { useParams } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
+import QuantityButton from "../components/QuantityButton";
+import { addToCart } from "../services/cartService";
+
 const ProductDetailsPage = () => {
   const [product, setProduct] = useState<ProductDTO | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { id } = useParams();
+  const [quantity, setQuantity] = useState(1);
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
       setError("");
       try {
-        const numericId = Number(id);
-        const data = await getProductById(numericId);
+        const data = await getProductById(id);
         setProduct(data);
       } catch (error: any) {
         const message =
@@ -48,6 +51,13 @@ const ProductDetailsPage = () => {
           </Col>
           <Col>
             <p>Price: ${product?.price}</p>
+          </Col>
+          <Col>
+            <QuantityButton
+              quantity={quantity}
+              onChangeQuantity={setQuantity}
+            />
+            <Button onClick={() => addToCart(id, quantity)}>Add to Cart</Button>
           </Col>
         </Row>
       )}

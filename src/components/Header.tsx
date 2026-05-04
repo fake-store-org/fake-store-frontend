@@ -9,6 +9,12 @@ const Header = () => {
         <Navbar.Brand as={Link} to="/">
           Fake Store
         </Navbar.Brand>
+        <Nav>
+          <Nav.Link as={Link} to="/cart">
+            Cart
+          </Nav.Link>
+        </Nav>
+
         <NavDropdown title="" align="end">
           {!isLoggedIn && (
             <NavDropdown.Item as={Link} to="/login">
