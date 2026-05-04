@@ -6,6 +6,20 @@ export interface CartItemRequest {
 }
 
 export interface OrderRequest {
-  itemRequests: Set<CartItemRequest>;
-  address: AddressRequest;
+  itemRequests: CartItemRequest[];
+  addressRequest: AddressRequest;
+}
+
+export interface AvailabilityRequest {
+  cartItemRequests: CartItemRequest[];
+}
+
+export interface AvailabilityResponse {
+  updatedCart: CartItemRequest[];
+  allAvailable: boolean;
+}
+
+export interface CheckoutResponse {
+  stripeUrl: string;
+  sessionId: string;
 }

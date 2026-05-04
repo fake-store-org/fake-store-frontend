@@ -1,3 +1,4 @@
+import { data } from "react-router-dom";
 import type {
   LoginRequest,
   LoginResponse,
@@ -6,6 +7,12 @@ import type {
   AddressResponse,
   AddressRequest,
 } from "../types/Auth";
+import type {
+  AvailabilityRequest,
+  AvailabilityResponse,
+  CheckoutResponse,
+  OrderRequest,
+} from "../types/Order";
 
 import type {
   ProductDTO,
@@ -139,7 +146,21 @@ export const getAllProducts = async (
   return res.data;
 };
 
-export const getProductById = async (id: number): Promise<ProductDTO> => {
+export const getProductById = async (id: string): Promise<ProductDTO> => {
   const res = await publicAPI.get(`/products/${id}`);
+  return res.data;
+};
+
+export const checkStock = async (
+  data: AvailabilityRequest,
+): Promise<AvailabilityResponse> => {
+  const res = await publicAPI.post("/products/check-stock", data);
+  return res.data;
+};
+
+export const placeOrder = async (
+  data: OrderRequest,
+): Promise<CheckoutResponse> => {
+  const res = await API.post("/orders", data);
   return res.data;
 };

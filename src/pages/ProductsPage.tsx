@@ -30,6 +30,12 @@ const ProductsPage = () => {
     empty: true,
   });
 
+  const [quantity, setQuantity] = useState(1);
+
+  const onChangeQuantity = (newQuantity: number) => {
+    setQuantity(newQuantity);
+  };
+
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -57,10 +63,10 @@ const ProductsPage = () => {
       <Row xs={2} md={4}>
         {products.length > 0 ? (
           products.map((product) => (
-            <Col key={product.id}>
+            <Col key={product.productId}>
               <ProductCard
                 product={product}
-                onClick={() => navigate(`/products/${product.id}`)}
+                onClick={() => navigate(`/products/${product.productId}`)}
               />
             </Col>
           ))
