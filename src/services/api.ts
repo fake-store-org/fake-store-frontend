@@ -154,13 +154,13 @@ export const getProductById = async (id: string): Promise<ProductDTO> => {
 export const checkStock = async (
   data: AvailabilityRequest,
 ): Promise<AvailabilityResponse> => {
-  const res = await publicAPI.post("/products/check-stock", data);
+  const res = await publicAPI.post("/reservations/check-stock", data);
   return res.data;
 };
 
 export const placeOrder = async (
   data: OrderRequest,
 ): Promise<CheckoutResponse> => {
-  const res = await API.post("/orders", data);
+  const res = await API.post("/orders/order", data);
   return res.data;
 };

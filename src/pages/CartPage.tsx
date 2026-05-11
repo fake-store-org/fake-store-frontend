@@ -63,18 +63,17 @@ const CartPage = () => {
     <Container className="mt-4">
       <Row>
         <Col>
-        {errorMessage && (
-          <Alert variant="info" className="mb-2 shadow-sm">
-            <i className="bi bi-info-circle-fill me-2"></i>
-            {errorMessage}
-          </Alert>
-        )}
+          {errorMessage && (
+            <Alert variant="info" className="mb-2 shadow-sm">
+              <i className="bi bi-info-circle-fill me-2"></i>
+              {errorMessage}
+            </Alert>
+          )}
           {loading ? (
             <LoadingSpinner />
           ) : error ? (
             <Alert variant="danger">{error}</Alert>
           ) : (
-
             <CartList items={cartItems} />
           )}
         </Col>
