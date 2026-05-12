@@ -10,7 +10,7 @@ const ProductsPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [products, setProducts] = useState<ProductDTO[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm] = useState("");
   const [currentPage] = useState(0);
   const [pageInfo, setPageInfo] = useState({
     totalElements: 0,
@@ -50,7 +50,7 @@ const ProductsPage = () => {
     <div>
       <p className="text-danger">{error}</p>
       {/* just to use those variables so i dont get error for now.....*/}
-      {setSearchTerm && <p>Visar resultat för: {searchTerm} </p>}
+
       <small className="text-muted">
         Sida {pageInfo.number + 1} av {pageInfo.totalPages}
       </small>

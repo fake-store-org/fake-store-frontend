@@ -15,11 +15,15 @@ const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
+    if (!id) {
+      setError("Invalid product ID");
+      return;
+    }
     const fetchProduct = async () => {
       setLoading(true);
       setError("");
       try {
-        const data = await getProductById(id);
+        const data = await getProductById(id!);
         setProduct(data);
       } catch (error: any) {
         const message =
@@ -57,7 +61,9 @@ const ProductDetailsPage = () => {
               quantity={quantity}
               onChangeQuantity={setQuantity}
             />
-            <Button onClick={() => addToCart(id, quantity)}>Add to Cart</Button>
+            <Button onClick={() => addToCart(id!, quantity)}>
+              Add to Cart
+            </Button>
           </Col>
         </Row>
       )}
