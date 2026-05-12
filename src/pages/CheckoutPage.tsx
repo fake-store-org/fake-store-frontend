@@ -1,12 +1,8 @@
-import type { AddressRequest, AddressResponse } from "../types/Auth";
-import type {
-  OrderRequest,
-  CartItemRequest,
-  CheckoutResponse,
-} from "../types/Order";
+import type { AddressRequest } from "../types/Auth";
+import type { OrderRequest, CartItemRequest } from "../types/Order";
 import { useEffect, useState, type SyntheticEvent } from "react";
 import AddressForm from "../components/AddressForm";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { getCart } from "../services/cartService";
 import { placeOrder } from "../services/api";
 
@@ -50,7 +46,11 @@ const CheckoutPage = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <p>Processing your order...</p>
+  ) : error ? (
+    <p className="text-danger">{error}</p>
+  ) : (
     <Container>
       <AddressForm
         addressData={addressData}
