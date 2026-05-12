@@ -3,15 +3,7 @@ import { getAllProducts } from "../services/api";
 import type { ProductDTO } from "../types/Product";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Form,
-  Button,
-  Alert,
-} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -19,7 +11,7 @@ const ProductsPage = () => {
   const [error, setError] = useState("");
   const [products, setProducts] = useState<ProductDTO[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage] = useState(0);
   const [pageInfo, setPageInfo] = useState({
     totalElements: 0,
     totalPages: 0,
@@ -29,12 +21,6 @@ const ProductsPage = () => {
     last: true,
     empty: true,
   });
-
-  const [quantity, setQuantity] = useState(1);
-
-  const onChangeQuantity = (newQuantity: number) => {
-    setQuantity(newQuantity);
-  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -58,7 +44,18 @@ const ProductsPage = () => {
     fetchProducts();
   }, [searchTerm, currentPage]);
 
-  return (
+  return loading ? (
+    <p>Loading products...</p>
+  ) : error ? (
+    <div>
+      <p className="text-danger">{error}</p>
+      {/* just to use those variables so i dont get error for now.....*/}
+      {setSearchTerm && <p>Visar resultat för: {searchTerm} </p>}
+      <small className="text-muted">
+        Sida {pageInfo.number + 1} av {pageInfo.totalPages}
+      </small>
+    </div>
+  ) : (
     <Container>
       <Row xs={2} md={4}>
         {products.length > 0 ? (

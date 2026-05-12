@@ -8,13 +8,10 @@ import { checkStock } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
-  // 1. Ändra typen till Set
   const [cartItems, setCartItems] = useState<Set<CartItemRequest>>(new Set());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [updatedCart, setUpdatedCart] = useState<Set<CartItemRequest>>(
-    new Set(),
-  );
+
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 

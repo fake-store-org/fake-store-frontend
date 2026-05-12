@@ -1,6 +1,6 @@
 import { useState, type SyntheticEvent } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import type { RegisterUserRequest } from "../types/Auth";
 import { useAuth } from "../contexts/AuthContext";
 import type { ErrorResponse } from "../types/Error";

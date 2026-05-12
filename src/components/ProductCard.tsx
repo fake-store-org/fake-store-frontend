@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { Card, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import type { ProductDTO } from "../types/Product";
-import { Link } from "react-router-dom";
 
 interface Props {
   product: ProductDTO;
@@ -17,7 +15,7 @@ const ProductCard = ({ product, onClick }: Props) => {
       />
       <Card.Body>
         <Card.Title className="text-truncate">
-          {product.id}, {product.title}
+          {product.productId}, {product.title}
         </Card.Title>
       </Card.Body>
     </Card>

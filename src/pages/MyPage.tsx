@@ -1,7 +1,7 @@
-import type { AddressRequest, AddressResponse } from "../types/Auth";
+import type { AddressRequest } from "../types/Auth";
 import { useState, type SyntheticEvent } from "react";
 import AddressForm from "../components/AddressForm";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { updateUserAddress } from "../services/api";
 
 const MyPage = () => {
@@ -31,7 +31,11 @@ const MyPage = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <p>loading...</p>
+  ) : error ? (
+    <p className="text-danger">{error}</p>
+  ) : (
     <Container>
       <Row>
         <Col xs={12}>

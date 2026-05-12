@@ -1,4 +1,4 @@
-import { Container, Alert, Button } from "react-bootstrap";
+import { Container, Alert } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 
 const SuccessPage = () => {
