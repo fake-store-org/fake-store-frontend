@@ -33,10 +33,8 @@ const ProductsPage = () => {
         });
         setProducts(data.content);
         setPageInfo(data);
-      } catch (error: any) {
-        const message =
-          error?.response?.data?.message || "Something went wrong";
-        setError(message);
+      } catch {
+        setError("Failed to load products. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -56,7 +54,7 @@ const ProductsPage = () => {
       </small>
     </div>
   ) : (
-    <Container>
+    <Container className="pt-5">
       <Row xs={2} md={4}>
         {products.length > 0 ? (
           products.map((product) => (

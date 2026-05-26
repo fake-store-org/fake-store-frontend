@@ -1,39 +1,37 @@
-// cartService.ts
 import type { CartItemRequest } from "../types/Order";
+import type { ProductDTO } from "../types/Product";
+import type { CartItem } from "../types/Order";
 
 const CART_KEY = "shopping_cart";
 
-export const addToCart = (productId: string, quantity: number): void => {
+export const addToCart = (product: ProductDTO, quantity: number): void => {
   const currentCart = getCart();
-  let found = false;
 
-  currentCart.forEach((item) => {
-    // Vi extraherar ID:t ifall item.productId råkar vara ett objekt
-    const existingId =
-      typeof item.productId === "object"
-        ? (item.productId as any).productId
-        : item.productId;
+  const existingItemIndex = currentCart.findIndex(
+    (item) => item.product.productId === product.productId,
+  );
 
-    if (existingId === productId) {
-      item.quantity = quantity;
-      item.productId = productId;
-      found = true;
-    }
-  });
-
-  if (!found) {
-    // Här sparar vi BARA id och quantity, inga titta/pris/beskrivning
-    currentCart.add({ productId, quantity });
+  if (existingItemIndex > -1) {
+    currentCart[existingItemIndex].quantity = quantity;
+  } else {
+    currentCart.push({ product, quantity });
   }
 
-  localStorage.setItem(CART_KEY, JSON.stringify(Array.from(currentCart)));
+  localStorage.setItem(CART_KEY, JSON.stringify(currentCart));
 };
 
-export const replaceCart = (newItems: Set<CartItemRequest>): void => {
-  localStorage.setItem(CART_KEY, JSON.stringify(Array.from(newItems)));
+export const replaceCart = (newItems: CartItem[]): void => {
+  localStorage.setItem(CART_KEY, JSON.stringify(newItems));
 };
 
-export const getCart = (): Set<CartItemRequest> => {
+export const getCart = (): CartItem[] => {
   const data = localStorage.getItem(CART_KEY);
-  return data ? new Set(JSON.parse(data)) : new Set();
+  return data ? JSON.parse(data) : [];
+};
+
+export const getCartForOrder = (): CartItemRequest[] => {
+  return getCart().map((item) => ({
+    productId: item.product.productId,
+    quantity: item.quantity,
+  }));
 };

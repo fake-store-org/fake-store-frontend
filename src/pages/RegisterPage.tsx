@@ -1,9 +1,10 @@
 import { useState, type SyntheticEvent } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { RegisterUserRequest } from "../types/Auth";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import type { ErrorResponse } from "../types/Error";
+import axios from "axios";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState<RegisterUserRequest>({
@@ -18,6 +19,10 @@ const RegisterPage = () => {
   const { registerUser } = useAuth();
 
   const handleSubmit = async (e: SyntheticEvent) => {
+    if (formData.password !== formData.confirmPassword) {
+      setGeneralError("Passwords don't match!");
+      return;
+    }
     e.preventDefault();
     setLoading(true);
     setFieldErrors({});
@@ -25,14 +30,18 @@ const RegisterPage = () => {
     try {
       await registerUser(formData);
       navigate("/");
-    } catch (error: any) {
-      const errorData: ErrorResponse | undefined = error?.response?.data;
-      if (errorData?.fieldErrors) {
-        setFieldErrors(errorData.fieldErrors);
-      } else if (errorData?.message) {
-        setGeneralError(errorData.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorData = error.response?.data as ErrorResponse;
+        if (errorData?.fieldErrors) {
+          setFieldErrors(errorData.fieldErrors);
+        } else if (errorData?.message) {
+          setGeneralError(errorData.message);
+        } else {
+          setGeneralError("Unexpected error. Please try again later.");
+        }
       } else {
-        setGeneralError("An unexpected error occurred. Please try again.");
+        setGeneralError("Unexpected error. Please try again later.");
       }
     } finally {
       setLoading(false);
