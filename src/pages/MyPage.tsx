@@ -23,9 +23,8 @@ const MyPage = () => {
     setLoading(true);
     try {
       await updateUserAddress(addressData);
-    } catch (error: any) {
-      const message = error?.response?.data?.message || "Something went wrong";
-      setError(message);
+    } catch {
+      setError("Failed to update address. Please try again later.");
     } finally {
       setLoading(false);
     }

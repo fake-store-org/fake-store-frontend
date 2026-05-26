@@ -1,13 +1,12 @@
 import { ListGroup, Row, Col } from "react-bootstrap";
-import type { CartItemRequest } from "../types/Order";
+import type { CartItem } from "../types/Order";
 
 interface Props {
-  items: Set<CartItemRequest>;
+  items: CartItem[];
 }
 
 const CartList = ({ items }: Props) => {
-  // Om Setet är tomt (size istället för length)
-  if (items.size === 0) {
+  if (items.length === 0) {
     return <p>Korgen är tom.</p>;
   }
 
@@ -15,10 +14,10 @@ const CartList = ({ items }: Props) => {
     <ListGroup variant="flush">
       {/* Vi skapar en array från Setet bara för loopen */}
       {Array.from(items).map((item) => (
-        <ListGroup.Item key={item.productId}>
+        <ListGroup.Item key={item.product.productId}>
           <Row>
             <Col>
-              <strong>Produkt:</strong> {item.productId}
+              <strong>Produkt:</strong> {item.product.title}
             </Col>
             <Col className="text-end">
               <strong>Antal:</strong> {item.quantity}

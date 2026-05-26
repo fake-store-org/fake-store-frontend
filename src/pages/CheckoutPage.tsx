@@ -1,9 +1,9 @@
 import type { AddressRequest } from "../types/Auth";
-import type { OrderRequest, CartItemRequest } from "../types/Order";
-import { useEffect, useState, type SyntheticEvent } from "react";
+import type { OrderRequest } from "../types/Order";
+import { useState, type SyntheticEvent } from "react";
 import AddressForm from "../components/AddressForm";
 import { Container } from "react-bootstrap";
-import { getCart } from "../services/cartService";
+import { getCartForOrder } from "../services/cartService";
 import { placeOrder } from "../services/api";
 
 const CheckoutPage = () => {
@@ -19,18 +19,12 @@ const CheckoutPage = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [cartItems, setCartItems] = useState<Set<CartItemRequest>>(new Set());
-
-  // Hämta varukorgen när vi landar på checkout-sidan
-  useEffect(() => {
-    const savedItems = getCart();
-    setCartItems(savedItems);
-  }, []);
 
   const handleAddressSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    const orderData = getCartForOrder();
     const orderPayload: OrderRequest = {
-      itemRequests: Array.from(cartItems),
+      itemRequests: orderData,
       addressRequest: addressData,
     };
     setLoading(true);
@@ -38,9 +32,8 @@ const CheckoutPage = () => {
     try {
       const response = await placeOrder(orderPayload);
       window.location.href = response.stripeUrl;
-    } catch (err: any) {
-      const message = err?.response?.data?.message || "Failed to place order";
-      setError(message);
+    } catch {
+      setError("Failed to place order. Please try again later.");
     } finally {
       setLoading(false);
     }

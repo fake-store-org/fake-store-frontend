@@ -1,4 +1,10 @@
 import type { AddressRequest } from "./Auth";
+import type { ProductDTO } from "./Product";
+
+export interface CartItem {
+  product: ProductDTO;
+  quantity: number;
+}
 
 export interface CartItemRequest {
   productId: string;

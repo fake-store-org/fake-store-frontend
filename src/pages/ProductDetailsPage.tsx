@@ -16,7 +16,7 @@ const ProductDetailsPage = () => {
 
   useEffect(() => {
     if (!id) {
-      setError("Invalid product ID");
+      setError("Something went wrong. Please try again later.");
       return;
     }
     const fetchProduct = async () => {
@@ -25,10 +25,8 @@ const ProductDetailsPage = () => {
       try {
         const data = await getProductById(id!);
         setProduct(data);
-      } catch (error: any) {
-        const message =
-          error?.response?.data?.message || "Something went wrong";
-        setError(message);
+      } catch {
+        setError("Failed to load product details. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -47,23 +45,24 @@ const ProductDetailsPage = () => {
           <Col xs={12}>
             <h1>{product?.title}</h1>
           </Col>
-          <Col className="mt-5" xs={12}>
+          <Col className="mt-5" xs={12} md={6}>
             <img src={product?.image} alt={product?.title} />
           </Col>
-          <Col className="mt-5">
-            <p>{product?.description}</p>
-          </Col>
           <Col>
-            <p>Price: ${product?.price}</p>
-          </Col>
-          <Col>
-            <QuantityButton
-              quantity={quantity}
-              onChangeQuantity={setQuantity}
-            />
-            <Button onClick={() => addToCart(id!, quantity)}>
-              Add to Cart
-            </Button>
+            <Col className="mt-5" xs={12}>
+              <p>{product?.description}</p>
+              <p>Price: ${product?.price}</p>
+            </Col>
+
+            <Col className="mt-5 align-items-center">
+              <QuantityButton
+                quantity={quantity}
+                onChangeQuantity={setQuantity}
+              />
+              <Button onClick={() => addToCart(product!, quantity)}>
+                Add to Cart
+              </Button>
+            </Col>
           </Col>
         </Row>
       )}

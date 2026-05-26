@@ -1,16 +1,18 @@
 import { Container, Row, Col, Alert, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { getCart, replaceCart } from "../services/cartService";
-import type { CartItemRequest, AvailabilityResponse } from "../types/Order"; // Importera rätt typ
+import { getCart, getCartForOrder, replaceCart } from "../services/cartService";
+import type { AvailabilityResponse, CartItem } from "../types/Order"; // Importera rätt typ
 import LoadingSpinner from "../components/LoadingSpinner";
 import CartList from "../components/CartList";
 import { checkStock } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState<Set<CartItemRequest>>(new Set());
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { isLoggedIn } = useAuth();
 
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
@@ -20,10 +22,10 @@ const CartPage = () => {
       setLoading(true);
       setError("");
       try {
-        const data = getCart(); // getCart är synkron eftersom den läser från localStorage
+        const data = getCart();
         setCartItems(data);
-      } catch (err: any) {
-        setError("Kunde inte ladda varukorgen");
+      } catch {
+        setError("Could not load cart.");
       } finally {
         setLoading(false);
       }
@@ -32,24 +34,39 @@ const CartPage = () => {
   }, []);
 
   const handleCheckout = async () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+    if (cartItems.length === 0) {
+      setErrorMessage("Your cart is empty. Please add items before checkout.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
+      const orderData = getCartForOrder();
       const response: AvailabilityResponse = await checkStock({
-        cartItemRequests: Array.from(cartItems),
+        cartItemRequests: orderData,
       });
       if (response.allAvailable) {
         navigate("/checkout");
       } else {
-        console.log(cartItems);
-        console.log(response.updatedCart);
-        replaceCart(new Set(response.updatedCart)); // Uppdatera localStorage med nya data
-        setCartItems(new Set(response.updatedCart));
+        const updatedCart: CartItem[] = cartItems.map((item) => {
+          const backendUpdate = response.updatedCart.find(
+            (update) => update.productId === item.product.productId,
+          );
+          return backendUpdate
+            ? { ...item, quantity: backendUpdate.quantity }
+            : item;
+        });
+        replaceCart(updatedCart);
+        setCartItems(updatedCart);
         setErrorMessage(
-          "Some of your items have limited stock. Check updated cart.",
+          "Some items have limited stock. Cart has been updated.",
         );
       }
-    } catch (err: any) {
+    } catch {
       setError("Failed to check stock availability");
     } finally {
       setLoading(false);

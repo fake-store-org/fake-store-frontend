@@ -2,7 +2,8 @@ import type { LoginRequest } from "../types/Auth";
 import { useState, type SyntheticEvent } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
+import axios from "axios";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState<LoginRequest>({
@@ -21,9 +22,19 @@ const LoginPage = () => {
     try {
       await loginUser(formData);
       navigate("/");
-    } catch (error: any) {
-      const message = error?.response?.data?.message || "Something went wrong";
-      setError(message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          setError("Wrong email or password. Please try again.");
+        } else {
+          setError(
+            error.response?.data?.message ||
+              "Login failed. Please try again later.",
+          );
+        }
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,3 @@
-
 import type {
   LoginRequest,
   LoginResponse,
@@ -46,13 +45,13 @@ API.interceptors.request.use((config) => {
 let isRefreshing = false;
 let failedQueue: {
   resolve: (value?: unknown) => void;
-  reject: (error?: any) => void;
+  reject: (reason?: unknown) => void;
 }[] = [];
 
-const processQueue = (error: any) => {
+const processQueue = (error: unknown) => {
   failedQueue.forEach((prom) => {
     if (error) prom.reject(error);
-    else prom.resolve(null);
+    else prom.resolve();
   });
   failedQueue = [];
 };
@@ -89,7 +88,7 @@ API.interceptors.response.use(
         processQueue(null);
 
         return API(originalRequest);
-      } catch (err) {
+      } catch (err: unknown) {
         processQueue(err);
 
         localStorage.removeItem("accessToken");
@@ -154,7 +153,7 @@ export const getProductById = async (id: string): Promise<ProductDTO> => {
 export const checkStock = async (
   data: AvailabilityRequest,
 ): Promise<AvailabilityResponse> => {
-  const res = await publicAPI.post("/reservations/check-stock", data);
+  const res = await publicAPI.post("/inventory/check-stock", data);
   return res.data;
 };
 
