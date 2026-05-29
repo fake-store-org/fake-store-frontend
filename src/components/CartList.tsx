@@ -12,10 +12,16 @@ const CartList = ({ items }: Props) => {
 
   return (
     <ListGroup variant="flush">
-      {/* Vi skapar en array från Setet bara för loopen */}
       {Array.from(items).map((item) => (
         <ListGroup.Item key={item.product.productId}>
-          <Row>
+          <Row className="mb-3">
+            <Col>
+              <img
+                src={item.product.image}
+                alt={item.product.title}
+                className="img-fluid"
+              />
+            </Col>
             <Col>
               <strong>Produkt:</strong> {item.product.title}
             </Col>

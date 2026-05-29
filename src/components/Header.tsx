@@ -1,35 +1,33 @@
-import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import "./styles/Header.css";
 const Header = () => {
   const { isLoggedIn } = useAuth();
   return (
-    <Navbar className="bg-light">
+    <Navbar className="header">
       <Container>
-        <Navbar.Brand as={Link} to="/">
+        <Navbar.Brand as={Link} className="logo-header" to="/">
           Fake Store
         </Navbar.Brand>
         <Nav>
-          <Nav.Link as={Link} to="/cart">
-            Cart
-          </Nav.Link>
-        </Nav>
+          <Nav.Link className="spacer"></Nav.Link>
 
-        <NavDropdown title="" align="end">
+          <Nav.Link as={Link} to="/cart">
+            <i className="bi bi-cart"></i>
+          </Nav.Link>
+
           {!isLoggedIn && (
-            <NavDropdown.Item as={Link} to="/login">
+            <Nav.Link as={Link} to="/login">
               Login
-            </NavDropdown.Item>
+            </Nav.Link>
           )}
           {isLoggedIn && (
-            <NavDropdown.Item as={Link} to="/my">
+            <Nav.Link as={Link} to="/my">
               My Account
-            </NavDropdown.Item>
+            </Nav.Link>
           )}
-          <NavDropdown.Item as={Link} to="/products">
-            Products
-          </NavDropdown.Item>
-        </NavDropdown>
+        </Nav>
       </Container>
     </Navbar>
   );

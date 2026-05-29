@@ -4,6 +4,7 @@ import type { ProductDTO } from "../types/Product";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
+import SaleBanner from "../components/SaleBanner";
 
 const ProductsPage = () => {
   const navigate = useNavigate();
@@ -54,7 +55,12 @@ const ProductsPage = () => {
       </small>
     </div>
   ) : (
-    <Container className="pt-5">
+    <Container fluid className="pt-3 products-container px-0">
+      <Row xs={12}>
+        <Col className="pb-3">
+          <SaleBanner />
+        </Col>
+      </Row>
       <Row xs={2} md={4}>
         {products.length > 0 ? (
           products.map((product) => (

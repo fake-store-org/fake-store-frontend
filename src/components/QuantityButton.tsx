@@ -1,8 +1,4 @@
-import {
-  Button,
-  InputGroup,
-  Form,
-} from "react-bootstrap";
+import { Button, InputGroup, Form } from "react-bootstrap";
 
 interface Props {
   quantity: number;
@@ -21,7 +17,6 @@ const QuantityButton = ({ quantity, onChangeQuantity }: Props) => {
   };
   return (
     <InputGroup style={{ maxWidth: "150px" }}>
-      {/* Minus-knapp */}
       <Button
         variant="outline-secondary"
         onClick={handleDecrease}
@@ -29,11 +24,7 @@ const QuantityButton = ({ quantity, onChangeQuantity }: Props) => {
       >
         -
       </Button>
-
-      {/* Siffran i mitten - Form.Control gör att det ser ut som ett inputfält */}
       <Form.Control className="text-center" value={quantity} readOnly />
-
-      {/* Plus-knapp */}
       <Button variant="outline-secondary" onClick={handleIncrease}>
         +
       </Button>
