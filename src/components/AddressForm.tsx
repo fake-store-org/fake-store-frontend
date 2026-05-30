@@ -4,18 +4,24 @@ import type { SyntheticEvent, ChangeEvent } from "react";
 
 interface Props {
   addressData: AddressRequest;
+  buttonText: string;
 
   setAddressData: React.Dispatch<React.SetStateAction<AddressRequest>>;
   handleSubmit: (e: SyntheticEvent) => void;
 }
 
-const AddressForm = ({ addressData, setAddressData, handleSubmit }: Props) => {
+const AddressForm = ({
+  addressData,
+  setAddressData,
+  handleSubmit,
+  buttonText,
+}: Props) => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAddressData({ ...addressData, [e.target.name]: e.target.value });
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="p-3 address-form text-start">
+    <Form onSubmit={handleSubmit} className="address-form text-start">
       <h3 className="mb-3">Address Details</h3>
 
       <Row>
@@ -107,7 +113,7 @@ const AddressForm = ({ addressData, setAddressData, handleSubmit }: Props) => {
       </Form.Group>
 
       <Button variant="dark" type="submit" className="address-button w-100">
-        Update Address
+        {buttonText}
       </Button>
     </Form>
   );

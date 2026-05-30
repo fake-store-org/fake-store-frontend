@@ -1,5 +1,4 @@
 .header {
-  height: 15vh;
   background-color: rgb(31, 31, 31);
 }
 
@@ -24,4 +23,12 @@
 }
 .bi-cart:hover {
   color: rgb(101, 101, 101);
+}
+
+.toggle-nav:hover {
+  color: rgb(101, 101, 101) !important;
+}
+.toggle-nav {
+  font-size: 1.5rem;
+  color: var(--color-yellow) !important;
 }

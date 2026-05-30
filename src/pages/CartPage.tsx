@@ -50,7 +50,7 @@ const CartPage = () => {
         cartItemRequests: orderData,
       });
       if (response.allAvailable) {
-        navigate("/checkout");
+        navigate("/checkout", { state: { cartItems } });
       } else {
         const updatedCart: CartItem[] = cartItems.map((item) => {
           const backendUpdate = response.updatedCart.find(

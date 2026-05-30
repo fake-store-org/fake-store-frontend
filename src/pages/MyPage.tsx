@@ -42,6 +42,7 @@ const MyPage = () => {
             addressData={addressData}
             setAddressData={setAddressData}
             handleSubmit={handleAddressSubmit}
+            buttonText="Update Address"
           />
         </Col>
       </Row>
