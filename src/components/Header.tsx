@@ -1,35 +1,35 @@
-import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import "./styles/Header.css";
 const Header = () => {
   const { isLoggedIn } = useAuth();
   return (
-    <Navbar className="bg-light">
-      <Container>
-        <Navbar.Brand as={Link} to="/">
-          Fake Store
-        </Navbar.Brand>
-        <Nav>
-          <Nav.Link as={Link} to="/cart">
-            Cart
-          </Nav.Link>
-        </Nav>
-
-        <NavDropdown title="" align="end">
+    <Navbar className="header">
+      <Container className="d-flex flex-column">
+        <Nav className="w-100 justify-content-end ">
           {!isLoggedIn && (
-            <NavDropdown.Item as={Link} to="/login">
+            <Nav.Link className="toggle-nav" as={Link} to="/login">
               Login
-            </NavDropdown.Item>
+            </Nav.Link>
           )}
           {isLoggedIn && (
-            <NavDropdown.Item as={Link} to="/my">
+            <Nav.Link className="toggle-nav" as={Link} to="/my">
               My Account
-            </NavDropdown.Item>
+            </Nav.Link>
           )}
-          <NavDropdown.Item as={Link} to="/products">
-            Products
-          </NavDropdown.Item>
-        </NavDropdown>
+        </Nav>
+
+        <div className="w-100 d-flex justify-content-between align-items-center">
+          <Navbar.Brand as={Link} className="logo-header" to="/">
+            Fake Store
+          </Navbar.Brand>
+          <Nav>
+            <Nav.Link as={Link} to="/cart">
+              <i className="bi bi-cart"></i>
+            </Nav.Link>
+          </Nav>
+        </div>
       </Container>
     </Navbar>
   );

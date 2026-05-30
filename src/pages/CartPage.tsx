@@ -50,7 +50,7 @@ const CartPage = () => {
         cartItemRequests: orderData,
       });
       if (response.allAvailable) {
-        navigate("/checkout");
+        navigate("/checkout", { state: { cartItems } });
       } else {
         const updatedCart: CartItem[] = cartItems.map((item) => {
           const backendUpdate = response.updatedCart.find(
@@ -67,7 +67,7 @@ const CartPage = () => {
         );
       }
     } catch {
-      setError("Failed to check stock availability");
+      setError("Unexpected error. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -91,7 +91,9 @@ const CartPage = () => {
             <CartList items={cartItems} />
           )}
         </Col>
-        <Button onClick={handleCheckout}>Continue to checkout</Button>
+        <Button className="button p-3 fs-3 mt-5" onClick={handleCheckout}>
+          Continue to checkout
+        </Button>
       </Row>
     </Container>
   );

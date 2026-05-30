@@ -35,34 +35,37 @@ const ProductDetailsPage = () => {
   }, [id]);
 
   return (
-    <Container>
+    <Container fluid className="px-0">
       {loading ? (
         <LoadingSpinner />
       ) : error ? (
         <Alert variant="danger">{error}</Alert>
       ) : (
-        <Row>
-          <Col xs={12}>
-            <h1>{product?.title}</h1>
+        <Row className="align-center mt-5">
+          <Col xs={12} md={6}>
+            <img
+              className="img-fluid w-70 mx-auto d-block"
+              src={product?.image}
+              alt={product?.title}
+            />
           </Col>
-          <Col className="mt-5" xs={12} md={6}>
-            <img src={product?.image} alt={product?.title} />
-          </Col>
-          <Col>
-            <Col className="mt-5" xs={12}>
-              <p>{product?.description}</p>
-              <p>Price: ${product?.price}</p>
-            </Col>
+          <Col className="px-5 mt-3" xs={12} md={6}>
+            <h1 className="fw-semibold ">{product?.title}</h1>
+            <p className="text-secondary small mt-0">#{product?.productId}</p>
+            <p className="fs-2 fw-bold"> ${product?.price}</p>
 
-            <Col className="mt-5 align-items-center">
-              <QuantityButton
-                quantity={quantity}
-                onChangeQuantity={setQuantity}
-              />
-              <Button onClick={() => addToCart(product!, quantity)}>
-                Add to Cart
-              </Button>
-            </Col>
+            <QuantityButton
+              quantity={quantity}
+              onChangeQuantity={setQuantity}
+            />
+            <Button
+              className="button w-100 mt-3"
+              onClick={() => addToCart(product!, quantity)}
+            >
+              Add to Cart
+            </Button>
+
+            <p className="text-muted mt-4 fs-6">{product?.description}</p>
           </Col>
         </Row>
       )}

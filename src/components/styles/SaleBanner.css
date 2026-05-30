@@ -1,0 +1,12 @@
+.sale-container {
+  background-color: red;
+}
+.sale-col {
+  font-size: 3rem;
+  color: white;
+  font-family: impact;
+  font-style: italic;
+}
+.sale-text {
+  white-space: nowrap;
+}

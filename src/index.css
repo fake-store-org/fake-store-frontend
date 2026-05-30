@@ -1,6 +1,32 @@
 main,
-body {
-  width: 100vw;
+body,
+html,
+#root {
   margin: 0;
-  background-color: lightgray;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+main {
+  min-height: 80vh;
+}
+
+:root {
+  --color-dark-yellow: #e9be5f;
+  --color-light-yellow: #f5e8b6;
+  --color-charcoal: #3a3e45;
+  --color-dark-charcoal: #2c2f33;
+  --color-muted-charcoal: #c4c8cc;
+  --color-gray: #595c56;
+  --color-yellow: #ffd700;
+}
+
+.button {
+  background-color: var(--color-charcoal) !important;
+  color: white !important;
+  border: none !important;
+}
+.button:hover {
+  background-color: var(--color-gray) !important;
 }

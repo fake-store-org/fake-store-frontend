@@ -8,14 +8,18 @@ import ProductDetailsPage from "./pages/ProductDetailsPage.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
 import SuccessPage from "./pages/SuccessPage.tsx";
+import Footer from "./components/Footer.tsx";
+import HomePage from "./pages/HomePage.tsx";
+import "./App.css";
 
 export const RootLayout = () => {
   return (
     <>
       <Header />
-      <main>
+      <main className="main-content">
         <Outlet />
       </main>
+      <Footer />
     </>
   );
 };
@@ -27,7 +31,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <ProductsPage />,
+        element: <HomePage />,
       },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },

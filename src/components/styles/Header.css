@@ -1,0 +1,34 @@
+.header {
+  background-color: rgb(31, 31, 31);
+}
+
+.logo-header {
+  color: var(--color-yellow) !important;
+  font-size: clamp(2.5rem, 10.5vw, 4rem) !important;
+  font-weight: bold !important;
+  font-family: Impact, sans-serif;
+  -webkit-text-stroke: 2px black;
+}
+.logo-header:hover {
+  color: var(--color-yellow) !important;
+  -webkit-text-stroke: 2px rgb(101, 101, 101);
+
+  font-family: Impact, sans-serif;
+}
+
+.bi-cart {
+  font-size: 1.5rem;
+  font-weight: bold !important;
+  color: var(--color-yellow);
+}
+.bi-cart:hover {
+  color: rgb(101, 101, 101);
+}
+
+.toggle-nav:hover {
+  color: rgb(101, 101, 101) !important;
+}
+.toggle-nav {
+  font-size: 1.5rem;
+  color: var(--color-yellow) !important;
+}
